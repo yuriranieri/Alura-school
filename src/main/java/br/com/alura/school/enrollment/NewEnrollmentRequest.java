@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-class NewEnrollmentRequest {
+public class NewEnrollmentRequest {
     
     @Size(max=20)
     @NotBlank(message = "campo username é obrigatório")

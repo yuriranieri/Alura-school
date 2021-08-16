@@ -4,6 +4,9 @@ import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -39,6 +42,26 @@ public class EnrollmentController {
     public ResponseEntity<List<Enrollment>> allEnrollments() {
         var enrollments = enrollmentRepository.findAll();
         return ResponseEntity.ok(enrollments);
+    }
+
+    @GetMapping("/courses/enroll/report")
+    public ResponseEntity<List<EnrollmentReportResponse>> enrollReport() {
+        var users = userRepository.findAll();
+        List<EnrollmentReportResponse> enrollmentReport = new ArrayList<>();
+
+        users.forEach(user -> {
+            var enrollments = enrollmentRepository.findByUser(user);
+            if(!enrollments.isEmpty()) {
+                enrollmentReport.add(new EnrollmentReportResponse(user.getEmail(), enrollments.size()));
+            }
+        });
+        
+        if (enrollmentReport.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        
+        Collections.sort(enrollmentReport, Comparator.comparing(EnrollmentReportResponse::getEnrollmentQuantity).reversed());
+        return ResponseEntity.ok(enrollmentReport);
     }
 
     @PostMapping("/courses/{courseCode}/enroll")
