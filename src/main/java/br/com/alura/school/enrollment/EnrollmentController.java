@@ -38,12 +38,6 @@ public class EnrollmentController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/enrollments")
-    public ResponseEntity<List<Enrollment>> allEnrollments() {
-        var enrollments = enrollmentRepository.findAll();
-        return ResponseEntity.ok(enrollments);
-    }
-
     @GetMapping("/courses/enroll/report")
     public ResponseEntity<List<EnrollmentReportResponse>> enrollReport() {
         var users = userRepository.findAll();
