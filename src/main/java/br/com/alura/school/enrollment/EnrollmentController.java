@@ -54,7 +54,7 @@ public class EnrollmentController {
             return ResponseEntity.noContent().build();
         }
         
-        Collections.sort(enrollmentReport, Comparator.comparing(EnrollmentReportResponse::getEnrollmentQuantity).reversed());
+        enrollmentReport.sort(Comparator.comparing(EnrollmentReportResponse::getEnrollmentQuantity).reversed());
         return ResponseEntity.ok(enrollmentReport);
     }
 
